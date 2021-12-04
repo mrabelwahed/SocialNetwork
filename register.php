@@ -101,6 +101,41 @@ if (isset($_POST["reg_button"])) {
         array_push($error_array, "Your password must between 5 and 30 characters <br>");
     }
 
+    //create encrypted password
+    $password = md5($password);
+
+    //create unique username
+    if (empty($error_array)) {
+        $username             = strtolower($fname . "_" . $lname);
+        $check_username_query = mysqli_query($con, "SELECT username FROM users where username='$username'");
+        $i                    = 0;
+        while (mysqli_num_rows($check_username_query) != 0) {
+            $i++;
+            $username             = $username . "_" . $i;
+            $check_username_query = mysqli_query($con, "SELECT username FROM users where username='$username'");
+        }
+
+        // profile pic
+        $rand = rand(1, 2);
+        if ($rand == 1) {
+            $profile_pic = "assets/images/profile_pics/defaults/head_deep_blue.png";
+        } else if ($rand == 2) {
+            $profile_pic = "assets/images/profile_pics/defaults/head_emerald.png";
+        }
+
+        //insert new user in users table
+
+        $query = mysqli_query($con, "INSERT INTO users VALUES(NULL,'$fname','$lname','$username','$em','$password','$date','$profile_pic','0','0','no',',')");
+
+        array_push($error_array, "<span style='color:#14c800'>  you are all set , pleas login </span><br>");
+        //clear session variable after submitting new user
+        $_SESSION['reg_fname']  = "";
+        $_SESSION['reg_lname']  = "";
+        $_SESSION['reg_email']  = "";
+        $_SESSION['reg_email2'] = "";
+
+    }
+
 }
 
 ?>
@@ -172,6 +207,10 @@ if (in_array("Your password do not match<br>", $error_array)) {
 
 ?>
     <input type="submit" name="reg_button" placeholder="submit">
+
+    <?php if (in_array("<span style='color:#14c800'>  you are all set , pleas login </span><br>", $error_array)) {
+    echo "<span style='color:#14c800'>  you are all set , pleas login </span><br>";
+}?>
  </form>
 
 
