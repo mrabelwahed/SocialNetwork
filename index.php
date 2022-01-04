@@ -1,5 +1,6 @@
 <?php
 include 'includes/header.php';
+include 'includes/classes/User.php';
 //session_destroy(); //destroy session once refresh the page 
 
 ?>
@@ -31,10 +32,16 @@ include 'includes/header.php';
             <hr>
         </form>
     </div>
+    <?php
+    $user_obj = new User($con, $userLoggedIn);
+    $test = $user_obj->getFirstNameAndLastName();
+    echo $test;
+    ?>
+</div>
+
 
 </div>
 
-</div>
 
 </body>
 
