@@ -27,7 +27,7 @@ if (isset($_SESSION['username'])) {
             <a href="index.php">Social APP</a>
         </div>
         <nav>
-            <a href="#">
+            <a href="<?php echo $userLoggedIn; ?>">
                 <?php echo $user['first_name']; ?>
             </a>
 
@@ -49,3 +49,4 @@ if (isset($_SESSION['username'])) {
             </a>
         </nav>
     </div>
+    <div class="wrapper">
